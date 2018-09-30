@@ -1,8 +1,11 @@
 const WebSocket = require('ws');
 const cmd = require('node-cmd');
 
-const utils = require('./utils');
+const utils = require('../utility/utils');
 const messageParser = require('./message');
+const secureMessage = require('../components/rsa');
+
+
 
 const wss = new WebSocket.Server({
   port: 7777,
@@ -34,7 +37,8 @@ var clients = [];
 wss.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
 		console.log('received: %s', message);
-		const reply = handleMessageFromClient(ws, message);
+		const decrypted = secureMessage.decryptMessage(message);
+		const reply = handleMessageFromClient(ws, decrypted);
 		console.log(reply);
 		if ( reply === 'nosend' ) {
 			// do not send
@@ -118,7 +122,12 @@ function runCommand(task,connection) {
 	return 'nosend';
 }
 
+
+
 function sendExplicitlyToClient(connection, message) {
 	console.log("Sending to client: ", message.toString());
-	connection.send(message.toString());
+	const encrypted = secureMessage.encryptMessage(message);
+	console.log("Encrypted: ", encrypted);
+	console.log("Decrypted: ", secureMessage.decryptMessage(encrypted));
+	connection.send(encrypted);
 }

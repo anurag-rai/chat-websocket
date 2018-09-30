@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-const utils = require('./utils');
-
+const utils = require('../utility/utils');
+const secureMessage = require('../components/rsa');
 const WebSocket = require('ws');
+
 
 var readline = require('readline');
 const rl = readline.createInterface({
@@ -48,10 +49,10 @@ ws.on('open', function open() {
 ws.on('message', function incoming(data) {
     console.log("===================================");
     console.log("Received from server, ", data);
-    data = data.toString();
-    const action = utils.getFirstWord(data);
+    decrypted = secureMessage.decryptMessage(data);
+    const action = utils.getFirstWord(decrypted);
     console.log('Action: ', action);
-    const task = utils.getRestWords(data);
+    const task = utils.getRestWords(decrypted);
     console.log('Task: ', task);
     if ( action == 'connected' ) {
         console.log("Connected to the server ...");
@@ -155,5 +156,6 @@ function displayRegisterTemplate() {
 
 function sendToServer(message) {
     console.log("Sending to server: ", message.toString());
-    ws.send(message.toString());
+    const encrypted = secureMessage.encrypMessage(message.toString(), 'base64');
+    ws.send(encrypted);
 }
