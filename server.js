@@ -33,7 +33,6 @@ wss.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
 		console.log('received: %s', message);
 		const reply = handleMessageFromClient(ws, message);
-		console.log("REPLY: ", reply);
 		sendToClient(reply);
 	});
  	console.log("Client connected");
@@ -78,19 +77,16 @@ function registerUser(task, connection) {
 
 function sendMessage(task) {
 	const payload = messageParser.get(task);
-	const recepient = payload.recepient;
-	const sender = payload.sender;
-	const message = payload.message;
 	if ( payload.valid == false )
 		return 'parseError'
 	// check if userName is a connected client
 	var found = clients.find(function(element) {
-	  return element.username === recepient;
+	  return element.username === payload.recepient;
 	});
 	if ( found === undefined )
 		return 'notOnline';
-	console.log(`Sending message to ${found.username}, message ${message}`);
-	var response = messageParser.createResponse(sender, message);
+	console.log(`Sending message to ${found.username}, message ${payload.message}`);
+	var response = messageParser.createResponse(payload.sender, payload.message);
 	sendExplicitlyToClient(found.link, response);
 	return 'sent message';
 }
@@ -99,17 +95,4 @@ function sendMessage(task) {
 function sendExplicitlyToClient(connection, message) {
 	console.log("Sending to client: ", message.toString());
 	connection.send(message.toString());
-}
-
-
-function checkActionValidity(input) {
-	if ( input === 'register' || input === 'message' || input === 'cmd')
-		return true;
-	return false;
-}
-
-function checkTaskValidity(input) {
-	if ( input === '' )
-		return false;
-	return true;
 }

@@ -56,11 +56,11 @@ ws.on('message', function incoming(data) {
     console.log('Task: ', task);
     if ( action == 'connected' ) {
         console.log("Connected to the server ...");
-        displayRegisterMessage();
+        displayRegisterTemplate();
     } else if ( action === 'registered' ) {
         console.log("Registration done");
         registered = true;
-        displayInputFormatMessage();
+        displayInputFormatTemplate();
     } else if ( action === 'notRegistered' ) {
         console.log("Not registered. Error: ", task);
     } else if ( action === 'message' ) {
@@ -120,7 +120,7 @@ function displayMessage(task) {
     console.log(`${sender} ---> ${message}`);
 }
 
-function displayInputFormatMessage() {
+function displayInputFormatTemplate() {
     console.log("======================================================");
     console.log("Format for input: ");
     console.log("To send a message to user_name, use: (without < and >)");
@@ -130,7 +130,7 @@ function displayInputFormatMessage() {
     console.log("======================================================");
 }
 
-function displayRegisterMessage() {
+function displayRegisterTemplate() {
     console.log("======================================================");
     console.log(" ]] Enter username to register on the server ");
 }
