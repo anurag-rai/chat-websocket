@@ -24,12 +24,14 @@ Use npm for installation of dependencies
 
 # WARNING
 
-Encryption is not done for the messages being sent in socket connection.
+Encryption is done with RSA but the keys are patched along with the code.
 
 ## TODO
 
-- Use RSA Encrption for sending messages
+- RSA encryption
+   - Generate keys on the fly and store in some other folder (/tmp for now).
 - Keep dynamic port (Currently hard-coded at 7777)
 - Use a logging framework in the server to log client request
-- Organize modules into components. Keep folders for client, server, utilities.
-   - Utilities for Server such as Message Parsing can be nested under the server folder (same for client)
+- Divide modules into smaller components.
+   - Client can have a message parser also
+- Resolve the ugly nested if statements inside the client websocket connnect loop
