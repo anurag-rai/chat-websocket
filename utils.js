@@ -11,11 +11,12 @@ module.exports = {
 	    for(var i = 1; i < arr.length; i++){
 	        rest += arr[i] + ' ';
 	    }
+	    console.log(" ]] utils --> ", rest.trim());
 	    return rest.trim();
 	},
 
 	decodeAction: function(input) {
-		console.log(" ]] utils --> input: ", input);
+		// console.log(" ]] utils --> input: ", input);
 		return this.getFirstWord(input);
 	}
 };

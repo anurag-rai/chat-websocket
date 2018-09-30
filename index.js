@@ -1,4 +1,6 @@
 const WebSocket = require('ws');
+const utils = require('./utils');
+const messageParser = require('./message');
 
 const wss = new WebSocket.Server({
   port: 7777,
@@ -23,9 +25,6 @@ const wss = new WebSocket.Server({
   }
 });
 
-const utils = require('./utils');
-
-const messageParser = require('./message');
 
 var clients = [];
 
@@ -91,6 +90,7 @@ function sendMessage(task) {
 	if ( found === undefined )
 		return 'The user is not online';
 	console.log(`Sending message to ${found.username}, message ${message}`);
+	var response = ''
 	sendExplicitlyToClient(found.link, message);
 	return 'sent message';
 }
