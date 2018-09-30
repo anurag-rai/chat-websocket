@@ -14,7 +14,7 @@ module.exports = {
 	    return rest.trim();
 	},
 
-	getActionFromMessage: function(input) {
+	decodeAction: function(input) {
 		console.log(" ]] utils --> input: ", input);
 		return this.getFirstWord(input);
 	}

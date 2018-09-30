@@ -1,3 +1,5 @@
+const utils = require('./utils');
+
 function getSender(input) {
 	return utils.getFirstWord(input);
 }
@@ -14,9 +16,9 @@ function getMessage(input) {
 
 module.exports = {
 	get: function(input) {
-		const recepient = getRecepient(task);
-		const sender = getSender(task);
-		const message = getMessage(task);
+		const recepient = getRecepient(input);
+		const sender = getSender(input);
+		const message = getMessage(input);
 		var valid = true;
 		const payload = {
 			recepient: recepient,

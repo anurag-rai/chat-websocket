@@ -43,7 +43,7 @@ const ws = new WebSocket('ws://localhost:7777/', {
 });
  
 ws.on('open', function open() {
-    console.log("On open")
+    console.log("Connecting to server ....")
 });
  
 ws.on('message', function incoming(data) {
@@ -89,7 +89,7 @@ function formatMessageToSend(username, input) {
 }
 
 function decodeInput(input) {
-    const action = decodeAction(input);
+    const action = utils.decodeAction(input);
     if ( action === 'message' ) {
         const formatedMessage = formatMessageToSend(username, input);
         if ( formatedMessage === 'invalid') {

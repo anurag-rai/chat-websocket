@@ -47,7 +47,7 @@ wss.on('connection', function connection(ws) {
 
 
 function handleMessageFromClient (connection, message) {
-	const action = utils.getActionFromMessage(message);
+	const action = utils.decodeAction(message);
 	console.log("Action = ", action);
 	if ( action === 'register' ) {
 		return registerUser(message, connection);
