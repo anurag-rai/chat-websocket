@@ -23,6 +23,8 @@ const wss = new WebSocket.Server({
   }
 });
 
+const utils = require('./utils');
+
 const messageParser = require('./message');
 
 var clients = [];
@@ -39,14 +41,14 @@ wss.on('connection', function connection(ws) {
 	sendToClient('connected');
 
 	function sendToClient(message) {
-		console.log("Sending to client: ", message.toString());
-		ws.send(message.toString());
+		sendExplicitlyToClient(ws, message);
 	}
 });
 
 
 function handleMessageFromClient (connection, message) {
-	const action = decodeAction(message);
+	const action = utils.getActionFromMessage(message);
+	console.log("Action = ", action);
 	if ( action === 'register' ) {
 		return registerUser(message, connection);
 	} else if ( action === 'message' ) {
@@ -61,7 +63,7 @@ function handleMessageFromClient (connection, message) {
 
 
 function registerUser(task, connection) {
-	const username = utils.getRestWords(task);
+	const name = utils.getRestWords(task);
 	// check if this username is taken
 	var found = clients.find(function(element) {
 	  return element.username === name;
@@ -76,10 +78,12 @@ function registerUser(task, connection) {
 }
 
 function sendMessage(task) {
-	const payload = messageParser;
-	const recepient = getRecepient(task);
-	const sender = getSender(task);
-	const message = getMessage(task);
+	const payload = messageParser.get(task);
+	const recepient = payload.recepient;
+	const sender = payload.sender;
+	const message = payload.message;
+	if ( payload.valid == false )
+		return 'Cannot parse payload'
 	// check if userName is a connected client
 	var found = clients.find(function(element) {
 	  return element.username === recepient;
@@ -87,11 +91,15 @@ function sendMessage(task) {
 	if ( found === undefined )
 		return 'The user is not online';
 	console.log(`Sending message to ${found.username}, message ${message}`);
-	found.link.send(message.toString());
+	sendExplicitlyToClient(found.link, message);
 	return 'sent message';
 }
 
 
+function sendExplicitlyToClient(connection, message) {
+	console.log("Sending to client: ", message.toString());
+	connection.send(message.toString());
+}
 
 
 function checkActionValidity(input) {

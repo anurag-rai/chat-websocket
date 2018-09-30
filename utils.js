@@ -12,5 +12,10 @@ module.exports = {
 	        rest += arr[i] + ' ';
 	    }
 	    return rest.trim();
+	},
+
+	getActionFromMessage: function(input) {
+		console.log(" ]] utils --> input: ", input);
+		return this.getFirstWord(input);
 	}
 };
