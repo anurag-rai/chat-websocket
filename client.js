@@ -62,7 +62,10 @@ ws.on('message', function incoming(data) {
         displayInputFormatMessage();
     } else if ( action === 'notRegistered' ) {
         console.log("Not registered. Error: ", task);
-    } else {
+    } else if ( action == 'message' ) {
+        displayMessage(task);    
+    } 
+    else {
         console.log("Message Received: ", task);
     }
 });
@@ -103,6 +106,12 @@ function decodeInput(input) {
     }
 }
 
+
+function displayMessage(task) {
+    const sender = utils.getFirstWord(task);
+    const message = utils.getRestWords(task);
+    console.log(`${sender} ---> ${message}`);
+}
 
 function displayInputFormatMessage() {
     console.log("======================================================");

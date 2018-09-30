@@ -90,8 +90,8 @@ function sendMessage(task) {
 	if ( found === undefined )
 		return 'The user is not online';
 	console.log(`Sending message to ${found.username}, message ${message}`);
-	var response = ''
-	sendExplicitlyToClient(found.link, message);
+	var response = messageParser.createResponse(sender, message);
+	sendExplicitlyToClient(found.link, response);
 	return 'sent message';
 }
 

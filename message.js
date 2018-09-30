@@ -11,8 +11,6 @@ function getSender(input) {
 
 function getMessage(input) {
 	var rest = utils.getRestWords(input);
-	console.log("Message: rest ", rest);
-	console.log("returning ", utils.getRestWords(rest));
 	return utils.getRestWords(rest);
 }
 
@@ -31,5 +29,9 @@ module.exports = {
 			valid: valid
 		}
 		return payload;
+	},
+
+	createResponse: function(sender, message) {
+		return 'message' + ' ' + sender + ' ' + message;
 	}
 };
