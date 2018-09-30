@@ -9,7 +9,7 @@ module.exports = {
 		var arr = input.trim().split(/(\s+)/);
 	    var rest = '';
 	    for(var i = 1; i < arr.length; i++){
-	        rest += arr[i] + ' ';
+	        rest += arr[i].trim() + ' ';
 	    }
 	    return rest.trim();
 	},

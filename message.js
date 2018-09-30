@@ -20,7 +20,7 @@ module.exports = {
 		const recepient = getRecepient(rest);
 		const sender = getSender(rest);
 		const message = getMessage(rest);
-		console.log(`${recepient}, Sender: ${sender}, Message: ${message}`);
+		console.log(`Recepient: ${recepient}, Sender: ${sender}, Message: ${message}`);
 		var valid = true;
 		const payload = {
 			recepient: recepient,

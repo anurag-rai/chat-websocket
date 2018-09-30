@@ -49,6 +49,7 @@ ws.on('open', function open() {
 ws.on('message', function incoming(data) {
     console.log("===================================");
     console.log("Received from server, ", data);
+    data = data.toString();
     const action = utils.getFirstWord(data);
     console.log('Action: ', action);
     const task = utils.getRestWords(data);
@@ -62,9 +63,15 @@ ws.on('message', function incoming(data) {
         displayInputFormatMessage();
     } else if ( action === 'notRegistered' ) {
         console.log("Not registered. Error: ", task);
-    } else if ( action == 'message' ) {
-        displayMessage(task);    
-    } 
+    } else if ( action === 'message' ) {
+        displayMessage(task); 
+    } else if ( action === 'notOnline' ) {
+        console.log("The other user is not online");
+    } else if ( action === 'parseError') {
+        console.log("Parse error in payload");
+    } else if ( action === 'error') {
+        console.log("Not allowed");
+    }
     else {
         console.log("Message Received: ", task);
     }

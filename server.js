@@ -56,7 +56,7 @@ function handleMessageFromClient (connection, message) {
 
 	} else {
 		// No such action
-		return 'Not allowed';
+		return 'error';
 	}
 }
 
@@ -82,13 +82,13 @@ function sendMessage(task) {
 	const sender = payload.sender;
 	const message = payload.message;
 	if ( payload.valid == false )
-		return 'Cannot parse payload'
+		return 'parseError'
 	// check if userName is a connected client
 	var found = clients.find(function(element) {
 	  return element.username === recepient;
 	});
 	if ( found === undefined )
-		return 'The user is not online';
+		return 'notOnline';
 	console.log(`Sending message to ${found.username}, message ${message}`);
 	var response = messageParser.createResponse(sender, message);
 	sendExplicitlyToClient(found.link, response);
