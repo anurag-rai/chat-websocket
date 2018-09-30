@@ -1,20 +1,20 @@
 Application is very basic and implementation wise it support:
 1. Client Login
 2. Message other clients on the server
-
+3. Running commands on the Server
 
 # Installation
 
 Use npm for installation of dependencies
-
+`npm install`
 
 # Starting Server
 
-node server.js
+`node server.js`
 
 # Starting Client
 
-node client.js
+`node client.js`
 
 # Client Commands
 
@@ -23,4 +23,4 @@ node client.js
 
 # WARNING
 
-The cmd part is not implemented
+Encryption is not done for the messages being sent in socket connection.
