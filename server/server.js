@@ -1,11 +1,14 @@
 const WebSocket = require('ws');
 const cmd = require('node-cmd');
+const path = require('path');
 
 const utils = require('../utility/utils');
 const messageParser = require('./message');
 const secureMessage = require('../components/rsa');
+const rsaWrapper = require('../components/rsa-wrapper');
 
-
+rsaWrapper.initLoadServerKeys(path.resolve(__dirname, '../'));
+rsaWrapper.serverExampleEncrypt();
 
 const wss = new WebSocket.Server({
   port: 7777,
@@ -37,7 +40,8 @@ var clients = [];
 wss.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
 		console.log('received: %s', message);
-		const decrypted = secureMessage.decryptMessage(message);
+		// const decrypted = secureMessage.decryptMessage(message);
+		const decrypted = rsaWrapper.decrypt(rsaWrapper.serverPrivate, message);
 		const reply = handleMessageFromClient(ws, decrypted);
 		console.log(reply);
 		if ( reply === 'nosend' ) {
@@ -126,8 +130,12 @@ function runCommand(task,connection) {
 
 function sendExplicitlyToClient(connection, message) {
 	console.log("Sending to client: ", message.toString());
-	const encrypted = secureMessage.encryptMessage(message);
+	// const encrypted = secureMessage.encryptMessage(message);
+	// console.log("Key = ", secureMessage.getKey());
+	// console.log("Encrypted: ", encrypted);
+	// console.log("Decrypted: ", secureMessage.decryptMessage(encrypted));
+	const encrypted = rsaWrapper.encrypt(rsaWrapper.clientPub, message.toString());
 	console.log("Encrypted: ", encrypted);
-	console.log("Decrypted: ", secureMessage.decryptMessage(encrypted));
+	console.log("Decrypted: ", rsaWrapper.decrypt(rsaWrapper.clientPrivate, encrypted));
 	connection.send(encrypted);
 }

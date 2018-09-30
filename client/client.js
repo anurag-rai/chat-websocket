@@ -2,8 +2,12 @@
 
 const utils = require('../utility/utils');
 const secureMessage = require('../components/rsa');
-const WebSocket = require('ws');
+const rsaWrapper = require('../components/rsa-wrapper');
 
+const WebSocket = require('ws');
+const path = require('path');
+
+rsaWrapper.initLoadClientKeys(path.resolve(__dirname, '../'));
 
 var readline = require('readline');
 const rl = readline.createInterface({
@@ -49,7 +53,10 @@ ws.on('open', function open() {
 ws.on('message', function incoming(data) {
     console.log("===================================");
     console.log("Received from server, ", data);
-    decrypted = secureMessage.decryptMessage(data);
+    // console.log("Key = ", secureMessage.getKey());
+    // const decrypted = secureMessage.decryptMessage(data);
+    const decrypted = rsaWrapper.decrypt(rsaWrapper.clientPrivate, data);
+
     const action = utils.getFirstWord(decrypted);
     console.log('Action: ', action);
     const task = utils.getRestWords(decrypted);
@@ -156,6 +163,7 @@ function displayRegisterTemplate() {
 
 function sendToServer(message) {
     console.log("Sending to server: ", message.toString());
-    const encrypted = secureMessage.encrypMessage(message.toString(), 'base64');
+    // const encrypted = secureMessage.encrypMessage(message.toString(), 'base64');
+    const encrypted = rsaWrapper.encrypt(rsaWrapper.serverPub, message.toString());
     ws.send(encrypted);
 }
