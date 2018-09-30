@@ -31,9 +31,8 @@ rl.on('line', (stdinput) => {
             const message = decodeInput(input);
             if ( message === 'invalid' ) {
                 console.log("Not a valid command");
-            }
-            if ( message )
-                sendToServer(message.toString());
+            } else if ( message )
+                sendToServer(message);
         }
     }
 })
@@ -71,6 +70,13 @@ ws.on('message', function incoming(data) {
         console.log("Parse error in payload");
     } else if ( action === 'error') {
         console.log("Not allowed");
+    } else if ( action === 'ACK' ) {
+        console.log("ACK Received");
+        console.log("Output: ");
+        console.log(task);
+    } else if ( action === 'NOACK' ) {
+        console.log("NOACK Received");
+        console.log(task);
     }
     else {
         console.log("Message Received: ", task);
@@ -98,6 +104,14 @@ function formatMessageToSend(username, input) {
     return 'message' + ' ' + arr[1] + ' ' + username + ' ' + message.trim();
 }
 
+function formatCommandToSend(input) {
+    // if ( /\s+/.test(input.trim()) ) {
+    //     return 'invalid';
+    // }
+    return input.trim();
+}
+
+
 function decodeInput(input) {
     const action = utils.decodeAction(input);
     if ( action === 'message' ) {
@@ -107,7 +121,11 @@ function decodeInput(input) {
         }
         sendToServer(formatedMessage);
     } else if ( action === 'cmd') {
-
+        const formatedMessage = formatCommandToSend(input);
+        if ( formatedMessage === 'invalid') {
+            return 'invalid';
+        }
+        sendToServer(formatedMessage);
     } else {
         return 'invalid';
     }

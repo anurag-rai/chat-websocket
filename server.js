@@ -1,4 +1,6 @@
 const WebSocket = require('ws');
+const cmd = require('node-cmd');
+
 const utils = require('./utils');
 const messageParser = require('./message');
 
@@ -33,7 +35,12 @@ wss.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
 		console.log('received: %s', message);
 		const reply = handleMessageFromClient(ws, message);
-		sendToClient(reply);
+		console.log(reply);
+		if ( reply === 'nosend' ) {
+			// do not send
+		} else {
+			sendToClient(reply);
+		}
 	});
  	console.log("Client connected");
 	sendToClient('connected');
@@ -52,7 +59,7 @@ function handleMessageFromClient (connection, message) {
 	} else if ( action === 'message' ) {
 		return sendMessage(message);
 	} else if ( action === 'cmd' ) {
-
+		return runCommand(message, connection);
 	} else {
 		// No such action
 		return 'error';
@@ -91,6 +98,25 @@ function sendMessage(task) {
 	return 'sent message';
 }
 
+
+function runCommand(task,connection) {
+	var command = utils.getRestWords(task);
+	cmd.get(
+		command, function(err, data, stderr){
+			console.log(`Err: ${err}, data: ${data}, stderr: ${stderr}`);
+            if (!err) {
+               console.log('success: ', data);
+               const response = 'ACK' + ' ' + data;
+               sendExplicitlyToClient(connection, response);
+            } else {
+               console.log('error', err);
+               const response = 'NOACK' + ' ' + err;
+               sendExplicitlyToClient(connection, response);
+            }
+        }
+	);
+	return 'nosend';
+}
 
 function sendExplicitlyToClient(connection, message) {
 	console.log("Sending to client: ", message.toString());
