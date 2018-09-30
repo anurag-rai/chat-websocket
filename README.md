@@ -24,3 +24,11 @@ Use npm for installation of dependencies
 # WARNING
 
 Encryption is not done for the messages being sent in socket connection.
+
+## TODO
+
+- Use RSA Encrption for sending messages
+- Keep dynamic port (Currently hard-coded at 7777)
+- Use a logging framework in the server to log client request
+- Organize modules into components. Keep folders for client, server, utilities.
+- Utilities for Server such as Message Parsing can be nested under the server folder (same for client)
