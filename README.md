@@ -6,6 +6,7 @@ Application is very basic and implementation wise it support:
 # Installation
 
 Use npm for installation of dependencies
+
 `npm install`
 
 # Starting Server
@@ -31,4 +32,4 @@ Encryption is not done for the messages being sent in socket connection.
 - Keep dynamic port (Currently hard-coded at 7777)
 - Use a logging framework in the server to log client request
 - Organize modules into components. Keep folders for client, server, utilities.
-- Utilities for Server such as Message Parsing can be nested under the server folder (same for client)
+   - Utilities for Server such as Message Parsing can be nested under the server folder (same for client)
