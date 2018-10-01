@@ -31,7 +31,7 @@ rl.on('line', (stdinput) => {
         input = stdinput;
         if ( input !== '') {
             //requires input validation (use regex)
-            console.log("echo input is ", input);
+            // console.log("echo input is ", input);
             const message = decodeInput(input);
             if ( message === 'invalid' ) {
                 console.log("Not a valid command");
@@ -50,16 +50,16 @@ ws.on('open', function open() {
 });
  
 ws.on('message', function incoming(data) {
-    console.log("===================================");
-    console.log("Received from server, ", data);
+    // console.log("===================================");
+    // console.log("Received from server, ", data);
     // console.log("Key = ", secureMessage.getKey());
     // const decrypted = secureMessage.decryptMessage(data);
     const decrypted = rsaWrapper.decrypt(rsaWrapper.clientPrivate, data);
 
     const action = utils.getFirstWord(decrypted);
-    console.log('Action: ', action);
+    // console.log('Action: ', action);
     const task = utils.getRestWords(decrypted);
-    console.log('Task: ', task);
+    // console.log('Task: ', task);
     if ( action == 'connected' ) {
         console.log("Connected to the server ...");
         displayRegisterTemplate();
@@ -151,7 +151,7 @@ function displayInputFormatTemplate() {
     console.log("To send a message to user_name, use: (without < and >)");
     console.log("message user_name <message>");
     console.log("To send a message to user_name, use:");
-    console.log("run <command>");
+    console.log("cmd <command>");
     console.log("======================================================");
 }
 

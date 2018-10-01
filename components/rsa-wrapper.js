@@ -34,11 +34,11 @@ rsaWrapper.generate = (direction) => {
 rsaWrapper.serverExampleEncrypt = () => {
     console.log('Server public encrypting');
 
-    let enc = rsaWrapper.encrypt(rsaWrapper.serverPub, 'Server init hello');
-    console.log('Encrypted RSA string ', '\n', enc);
-    let dec = rsaWrapper.decrypt(rsaWrapper.serverPrivate, enc);
-    console.log('Decrypted RSA string ...');
-    console.log(dec);
+    // let enc = rsaWrapper.encrypt(rsaWrapper.serverPub, 'Server init hello');
+    // console.log('Encrypted RSA string ', '\n', enc);
+    // let dec = rsaWrapper.decrypt(rsaWrapper.serverPrivate, enc);
+    // console.log('Decrypted RSA string ...');
+    // console.log(dec);
 };
 
 rsaWrapper.encrypt = (publicKey, message) => {

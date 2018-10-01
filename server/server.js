@@ -38,7 +38,7 @@ var clients = [];
 
 wss.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
-		console.log('received: %s', message);
+		// console.log('received: %s', message);
 		// const decrypted = secureMessage.decryptMessage(message);
 		const decrypted = rsaWrapper.decrypt(rsaWrapper.serverPrivate, message);
 		const reply = handleMessageFromClient(ws, decrypted);
@@ -134,7 +134,7 @@ function sendExplicitlyToClient(connection, message) {
 	// console.log("Encrypted: ", encrypted);
 	// console.log("Decrypted: ", secureMessage.decryptMessage(encrypted));
 	const encrypted = rsaWrapper.encrypt(rsaWrapper.clientPub, message.toString());
-	console.log("Encrypted: ", encrypted);
-	console.log("Decrypted: ", rsaWrapper.decrypt(rsaWrapper.clientPrivate, encrypted));
+	// console.log("Encrypted: ", encrypted);
+	// console.log("Decrypted: ", rsaWrapper.decrypt(rsaWrapper.clientPrivate, encrypted));
 	connection.send(encrypted);
 }
