@@ -4,7 +4,6 @@ const path = require('path');
 
 const utils = require('../utility/utils');
 const messageParser = require('./message');
-const secureMessage = require('../components/rsa');
 const rsaWrapper = require('../components/rsa-wrapper');
 
 rsaWrapper.initLoadServerKeys(path.resolve(__dirname, '../'));

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const utils = require('../utility/utils');
-const secureMessage = require('../components/rsa');
 const rsaWrapper = require('../components/rsa-wrapper');
 
 const WebSocket = require('ws');
